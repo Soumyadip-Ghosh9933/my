@@ -1,5 +1,6 @@
-const API_KEY = 'AIzaSyBMrqe_SpGHdunSNKTk6t06FA386S3cvtk';
-const CHANNEL_ID = 'UCHDIE8He7i3dPenCqtB6UAw';
+const API_KEY = 'AIzaSyBMrqe_SpGHdunSNKTk6t06FA386S3cvtk';  // ⚠️ Apni API key yaha paste karo
+const CHANNEL_ID = 'UCHDIE8He7i3dPenCqtB6UAw';  // ⚠️ Apna YouTube Channel ID yaha paste karo
+
 const videosContainer = document.getElementById('videos');
 const searchBox = document.getElementById('search-box');
 const themeToggle = document.getElementById('theme-toggle');
@@ -7,7 +8,7 @@ const loadMoreBtn = document.getElementById('load-more');
 
 let nextPageToken = '';
 
-// ✅ **Loading Indicator**
+// ✅ Loading Indicator
 const loadingMessage = document.createElement('p');
 loadingMessage.textContent = 'Loading videos...';
 loadingMessage.style.textAlign = 'center';
@@ -16,7 +17,7 @@ loadingMessage.style.margin = '20px 0';
 videosContainer.appendChild(loadingMessage);
 
 async function fetchVideos(pageToken = '') {
-    loadingMessage.style.display = 'block'; // ✅ Loading message show before fetching
+    loadingMessage.style.display = 'block';
 
     const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=12&pageToken=${pageToken}`;
 
@@ -24,8 +25,8 @@ async function fetchVideos(pageToken = '') {
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.items.length === 0) {
-            loadingMessage.textContent = 'No videos found.';
+        if (!data.items) {
+            loadingMessage.textContent = 'No videos found or API limit exceeded.';
             return;
         }
 
@@ -36,7 +37,7 @@ async function fetchVideos(pageToken = '') {
         console.error('Error fetching videos:', error);
         loadingMessage.textContent = 'Failed to load videos. Please try again.';
     } finally {
-        loadingMessage.style.display = 'none'; // ✅ Hide loading message after fetching
+        loadingMessage.style.display = 'none';
     }
 }
 
